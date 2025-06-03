@@ -1,0 +1,37 @@
+{"properties": [
+  {
+    "name": "flowly.security.public-paths[1]",
+    "type": "java.lang.String",
+    "description": "A description for 'flowly.security.public-paths[1]'"
+  },
+  {
+    "name": "flowly.security.public-paths[0]",
+    "type": "java.lang.String",
+    "description": "A description for 'flowly.security.public-paths[0]'"
+  },
+  {
+    "name": "flowly.security.jwt.expiration-ms",
+    "type": "java.lang.String",
+    "description": "A description for 'flowly.security.jwt.expiration-ms'"
+  },
+  {
+    "name": "flowly.tenants.default-schema",
+    "type": "java.lang.String",
+    "description": "A description for 'flowly.tenants.default-schema'"
+  },
+  {
+    "name": "flowly.security.jwt.secret",
+    "type": "java.lang.String",
+    "description": "A description for 'flowly.security.jwt.secret'"
+  },
+  {
+    "name": "flowly.security.cors.allowed-origins[1]",
+    "type": "java.lang.String",
+    "description": "A description for 'flowly.security.cors.allowed-origins[1]'"
+  },
+  {
+    "name": "flowly.multitenancy.schema-prefix",
+    "type": "java.lang.String",
+    "description": "A description for 'flowly.multitenancy.schema-prefix'"
+  }
+]}
