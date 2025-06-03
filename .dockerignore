@@ -1,23 +1,17 @@
 # Maven
 target/
-!.mvn/wrapper/maven-wrapper.jar
 .mvn/
-pom.xml
-mvnw
-mvnw.cmd
+!.mvn/wrapper/maven-wrapper.jar
+
+# System files
+.DS_Store
+*.log
 
 # Git
 .git
 .gitignore
 
-# IDEs
+# IDE
 *.iml
 .idea/
 .vscode/
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Logs
-*.log
