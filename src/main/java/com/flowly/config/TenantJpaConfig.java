@@ -5,8 +5,8 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.hibernate.context.spi.CurrentTenantIdentifierResolver;
-import org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider;
+import com.flowly.config.multitenancy.CurrentTenantIdentifierResolverImpl;
+import com.flowly.config.multitenancy.SchemaMultiTenantConnectionProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
@@ -22,20 +22,22 @@ import jakarta.persistence.EntityManagerFactory;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = "com.flowly.shared.model", // your tenant-specific business model
+        basePackages = {"com.flowly"},
+//         ,"com.flowly.shared.model", "com.flowly.shared.repository", "com.flowly.auth.service"
+// , "com.flowly.config.multitenancy"},
         entityManagerFactoryRef = "tenantEntityManagerFactory",
         transactionManagerRef = "tenantTransactionManager"
 )
 public class TenantJpaConfig {
-
     @Bean
-    public LocalContainerEntityManagerFactoryBean tenantEntityManagerFactory(   
-        EntityManagerFactoryBuilder builder,
-        DataSource dataSource,
-        MultiTenantConnectionProvider<?> multiTenantConnectionProvider,
-        CurrentTenantIdentifierResolver<?> tenantIdentifierResolver
+    public LocalContainerEntityManagerFactoryBean tenantEntityManagerFactory(
+            EntityManagerFactoryBuilder builder,
+            DataSource dataSource,
+            SchemaMultiTenantConnectionProvider multiTenantConnectionProvider,
+            CurrentTenantIdentifierResolverImpl tenantIdentifierResolver
     ) {
         Map<String, Object> properties = new HashMap<>();
+        properties.put("hibernate.multiTenancy", "SCHEMA");
         properties.put("hibernate.multi_tenant_connection_provider", multiTenantConnectionProvider);
         properties.put("hibernate.tenant_identifier_resolver", tenantIdentifierResolver);
         properties.put("hibernate.hbm2ddl.auto", "update");

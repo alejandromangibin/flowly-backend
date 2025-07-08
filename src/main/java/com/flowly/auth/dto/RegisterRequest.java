@@ -1,7 +1,6 @@
 // --- DTOs ---
 package com.flowly.auth.dto;
 
-import java.util.UUID;
 
 import lombok.*;
 
@@ -12,7 +11,9 @@ public class RegisterRequest {
     private String username;
     private String email;
     private String password;
-    private UUID tenantId;
+    private String role;
+    // private UUID tenantId;
+    
 }
 
 

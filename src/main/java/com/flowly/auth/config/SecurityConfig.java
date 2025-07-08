@@ -34,7 +34,9 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/tenants/register").permitAll()
+                .requestMatchers("/api/tenants/**").permitAll()
                 .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/**").permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
@@ -60,7 +62,10 @@ public class SecurityConfig {
             @Override
             public void addCorsMappings(@NonNull CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins(securityProps.cors().allowedOrigins().toArray(new String[0]))
+                        .allowedOriginPatterns(securityProps.cors().allowedOrigins().toArray(new String[0]))
+                        .allowedOriginPatterns(securityProps.cors().allowedOrigins().toArray(new String[1]))
+                        .allowedOriginPatterns(securityProps.cors().allowedOrigins().toArray(new String[2]))
+                        // .allowedOriginPatterns(securityProps.cors().allowedOrigins().toArray(new String[3])) //localhost:8080
                         .allowedMethods("*");
             }
         };

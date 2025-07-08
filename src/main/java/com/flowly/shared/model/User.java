@@ -1,4 +1,3 @@
-// --- User.java ---
 package com.flowly.shared.model;
 
 import java.time.LocalDateTime;
@@ -14,11 +13,10 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "app_user", schema = "public")
+@Table(name = "app_user") // No schema specified - handled by multitenancy
 public class User {
-   @Id
+    @Id
     @GeneratedValue
-    //@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @UuidGenerator
     @Column(name = "user_id", updatable = false, nullable = false)
     private UUID id;
@@ -27,16 +25,17 @@ public class User {
     private String email;
     private String password;
     private String role;
-
-    @ManyToOne
-    @JoinColumn(name = "tenant_id")
-    private Tenant tenant;
-
+    
+    // Additional tenant-specific fields
+    private String firstName;
+    private String lastName;
+    private String department;
+    
     private LocalDateTime createdAt;
+    private LocalDateTime lastLoginAt;
 
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
     }
-
 }

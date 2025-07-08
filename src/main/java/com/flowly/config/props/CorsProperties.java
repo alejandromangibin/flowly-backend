@@ -3,7 +3,9 @@ package com.flowly.config.props;
 
 import java.util.List;
 
-//@ConfigurationProperties(prefix = "flowly.security.cors")
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
+@ConfigurationProperties(prefix = "flowly.security.cors")
 public record CorsProperties(
     List<String> allowedOrigins
 ) {}

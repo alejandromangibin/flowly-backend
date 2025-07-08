@@ -1,4 +1,3 @@
-// --- JwtService.java ---
 package com.flowly.auth.service;
 
 import io.jsonwebtoken.*;
@@ -9,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.flowly.config.FlowlySecurityProperties;
+import com.flowly.config.multitenancy.TenantContextHolder;
 import com.flowly.shared.model.User;
 
 import java.security.Key;
@@ -21,11 +21,12 @@ public class JwtService {
     private final long EXPIRATION = 86400000; // 1 day
     private final FlowlySecurityProperties securityProperties;
     
-    public String generateToken(User user) {
+
+        public String generateToken(User user) {
         return Jwts.builder()
                 .setSubject(user.getEmail())
                 .claim("role", user.getRole())
-                .claim("tenantId", user.getTenant().getId())
+                .claim("tenantSchema",TenantContextHolder.getCurrentTenant())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
                 .signWith(getKey())
@@ -34,18 +35,34 @@ public class JwtService {
 
     private Key getKey() {
         return Keys.hmacShaKeyFor(
-            // SECRET
-            securityProperties.jwt().getSecret()
-            .getBytes());
+            securityProperties.jwt().getSecret().getBytes());
     }
 
     public String extractUsername(String token) {
-    return Jwts.parserBuilder()
-            .setSigningKey(getKey())
-            .build()
-            .parseClaimsJws(token)
-            .getBody()
-            .getSubject();
+        return Jwts.parserBuilder()
+                .setSigningKey(getKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+    }
+
+    public String extractTenantSchema(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("tenantSchema", String.class);
+    }
+
+    public String extractTenantId(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("tenantId", String.class);
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
@@ -62,6 +79,4 @@ public class JwtService {
                 .getExpiration()
                 .before(new Date());
     }
-
-
 }

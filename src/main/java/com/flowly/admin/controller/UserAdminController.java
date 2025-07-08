@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.flowly.shared.model.User;
-import com.flowly.admin.repository.AppUserRepository;
+import com.flowly.shared.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @PreAuthorize("hasRole('ADMIN')")
 public class UserAdminController {
 
-    private final AppUserRepository userRepository;
+    private final UserRepository userRepository;
 
     @GetMapping
     public List<User> getAllUsers() {
